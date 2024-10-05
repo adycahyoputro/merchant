@@ -1,0 +1,758 @@
+{
+	"info": {
+		"_postman_id": "33cf0671-d19a-43eb-bd01-7a2bd19dda72",
+		"name": "merchant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14185792"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\":\"first_name03\",\r\n    \"last_name\":\"last_name03\",\r\n    \"email\":\"email03@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"first_name02\",\r\n    \"last_name\":\"last_name02\",\r\n    \"email\":\"email02@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 17:02:30 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "87"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 302,\n    \"status\": \"FOUND\",\n    \"data\": \"user with email email02@gmail.com has registered\"\n}"
+				},
+				{
+					"name": "register success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"first_name03\",\r\n    \"last_name\":\"last_name03\",\r\n    \"email\":\"email03@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 17:02:57 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "163"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 201,\n    \"status\": \"CREATED\",\n    \"data\": {\n        \"id\": \"8503fbdd-1664-43ff-84ad-309f4a343774\",\n        \"user_name\": \"first_name03 last_name03\",\n        \"email\": \"email03@gmail.com\",\n        \"balance\": 0\n    }\n}"
+				},
+				{
+					"name": "register first name required",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"\",\r\n    \"last_name\":\"last_name03\",\r\n    \"email\":\"email03@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 04 Oct 2024 17:23:39 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "67"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 400,\n    \"status\": \"BAD_REQUEST\",\n    \"data\": \"first name is required\"\n}"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"email@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "login success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"email@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 16:58:46 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 202,\n    \"status\": \"ACCEPTED\",\n    \"data\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc\"\n}"
+				},
+				{
+					"name": "login failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"email@gmail.com\",\r\n    \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 04 Oct 2024 17:18:41 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "89"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 404,\n    \"status\": \"NOT_FOUND\",\n    \"data\": \"user with email email@gmail.com not registered\"\n}"
+				}
+			]
+		},
+		{
+			"name": "entry amount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\":1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/manage-bank/entry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"manage-bank",
+						"entry"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "entry amount uauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDcxNTEsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.CD5-YXYr50nVf9_lJj9I-cRBwP-Jh-jpj2ec8vDX9n8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/merchant/entry",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"entry"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 16:58:36 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 401,\n    \"status\": \"UNAUTHORIZED\",\n    \"data\": \"user unauthorize\"\n}"
+				},
+				{
+					"name": "entry amount success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgwNjczOTcsImlkIjoiZGJjZTVkMzAtM2FlZi00NWVmLThjMWMtMWFiNDEzNGQ3NTc5In0.PJyF3RHK-7VrxaQlKsZG6-zQcwcgBeuX2XvmEU3Pqrg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/merchant/entry",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"entry"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 04 Oct 2024 17:44:19 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "121"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 201,\n    \"status\": \"CREATED\",\n    \"data\": {\n        \"account_id\": \"d5a702ed-26c4-4b21-834b-9b704be248a8\",\n        \"amount\": 1000,\n        \"balance\": 1000\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "transfer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDgyMTMsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.UWX6ib0_F4azytBH3bKgJYR37EBnkcGZ1JeH67F204w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"to_account_id\":\"97496a9e-4a3c-4d57-8bf9-fe47832ab304\",\r\n    \"amount\":1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/manage-bank/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"manage-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "transfer unauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to_account_id\":\"97496a9e-4a3c-4d57-8bf9-fe47832ab304\",\r\n    \"amount\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/merchant/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"transfer"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 17:02:04 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 401,\n    \"status\": \"UNAUTHORIZED\",\n    \"data\": \"user unauthorize\"\n}"
+				},
+				{
+					"name": "transfer success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDgyMTMsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.UWX6ib0_F4azytBH3bKgJYR37EBnkcGZ1JeH67F204w",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to_account_id\":\"97496a9e-4a3c-4d57-8bf9-fe47832ab304\",\r\n    \"amount\":1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/merchant/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"transfer"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 17:04:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "210"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 201,\n    \"status\": \"CREATED\",\n    \"data\": {\n        \"id\": \"1d400ca9-9ba2-43e1-99a2-eea2278347bd\",\n        \"from_account_id\": \"4d02e0be-2f3f-4f60-abca-537be10ed0b8\",\n        \"to_account_id\": \"97496a9e-4a3c-4d57-8bf9-fe47832ab304\",\n        \"amount\": 1000\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/manage-bank/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"manage-bank",
+						"logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "logout success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8888/merchant/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Jun 2023 17:01:05 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 200,\n    \"status\": \"OK\",\n    \"data\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "create store",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgxNTc0NTYsImlkIjoiZGJjZTVkMzAtM2FlZi00NWVmLThjMWMtMWFiNDEzNGQ3NTc5In0.4JIBr7R3FSrXOOYf7Gx3t0W165JhM_OrrtI02dXyLZs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"store_name\":\"store1\",\r\n    \"description\":\"description1\",\r\n    \"email\":\"emailstore01@gmail.com\",\r\n    \"no_hp\":\"081345678911\",\r\n    \"address\":\"address1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/merchant/store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"merchant",
+						"store"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgxNTc0NTYsImlkIjoiZGJjZTVkMzAtM2FlZi00NWVmLThjMWMtMWFiNDEzNGQ3NTc5In0.4JIBr7R3FSrXOOYf7Gx3t0W165JhM_OrrtI02dXyLZs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"store_id\":\"124f1ada-1607-443b-a932-4c77d892e6d3\",\r\n    \"product_name\":\"product1\",\r\n    \"description\":\"description1\",\r\n    \"stock\":10,\r\n    \"price\":5000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/merchant/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"merchant",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create cart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgxNTg2MDQsImlkIjoiZGJjZTVkMzAtM2FlZi00NWVmLThjMWMtMWFiNDEzNGQ3NTc5In0.QVO0Jgbf50GV0CkLeozJizHk4aGHZMH05wG8cpgfAjw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_id\":\"91b67e97-15f4-4f70-ba2e-1b56e83188bc\",\r\n    \"quantity\":5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/merchant/cart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"merchant",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
