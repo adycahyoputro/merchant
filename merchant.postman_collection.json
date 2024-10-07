@@ -437,7 +437,7 @@
 			]
 		},
 		{
-			"name": "transfer",
+			"name": "payment",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -585,19 +585,19 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODgxNDc5MjYsImlkIjoiZTdmNDVlYmMtZjVjZC00MTQwLTg4ODEtMTkyODA5M2IzNzhjIn0.QZlfclEalCU0ZOi2ZKfN-rIr59KNO4Ey5zlq5W3iYQc",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyMzEwMDAsImlkIjoiNGE3ZTRkMTItN2VmZS00ZmNiLThkZTQtZDFkYzk3ZjA3YzExIn0.d9sXGnGAwCcbN8-E6xeMhiYXdTL0Dadqm9BZYoPEZKc",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/manage-bank/logout",
+					"raw": "http://localhost:8888/merchant/logout",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8888",
 					"path": [
-						"manage-bank",
+						"merchant",
 						"logout"
 					]
 				}
@@ -752,7 +752,61 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "create cart",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjgyMjYzNjYsImlkIjoiNGE3ZTRkMTItN2VmZS00ZmNiLThkZTQtZDFkYzk3ZjA3YzExIn0.h1nSssvIuJPJ8kZWkQNr1VvQooU6IFcDhMDKIZOPsLU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\":\"91b67e97-15f4-4f70-ba2e-1b56e83188bc\",\r\n    \"quantity\":5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/merchant/cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"merchant",
+								"cart"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Oct 2024 13:53:32 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "34"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 0,\n    \"status\": \"\",\n    \"data\": null\n}"
+				}
+			]
 		}
 	]
 }
