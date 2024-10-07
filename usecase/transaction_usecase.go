@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/adycahyoputro/merchant/model/dto"
 	"github.com/adycahyoputro/merchant/repository"
@@ -10,7 +11,7 @@ import (
 
 type TransactionUsecase interface {
 	CreateUserAccount(newMainUser *dto.UserRequest) (*dto.UserResponse, error)
-	CreateMainTransfer(newMainTransfer *dto.TransferRequest, fromAccountID string) (*dto.TransferResponse, error)
+	CreateMainTransfer(newMainTransfer *dto.TransferRequest) (*dto.TransferResponse, error)
 	CreateMainEntry(newMainEntry *dto.EntryRequest, accountID string, balance int64) (*dto.EntryResponse, error)
 }
 
@@ -18,16 +19,22 @@ type transactionUsecase struct {
 	transactionRepo repository.TransactionRepository
 	userRepo        repository.UserRepository
 	accountRepo     repository.AccountRepository
+	cartRepo  repository.CartRepository
+	productRepo repository.ProductRepository
 }
 
 func NewTransactionUsecase(
 	transactionRepo repository.TransactionRepository,
 	userRepo repository.UserRepository,
-	accountRepo repository.AccountRepository) TransactionUsecase {
+	accountRepo repository.AccountRepository,
+	cartRepo  repository.CartRepository,
+	productRepo repository.ProductRepository) TransactionUsecase {
 	return &transactionUsecase{
 		transactionRepo: transactionRepo,
 		userRepo:        userRepo,
-		accountRepo:     accountRepo}
+		accountRepo:     accountRepo,
+		cartRepo: cartRepo,
+		productRepo: productRepo,}
 }
 
 func (usecase *transactionUsecase) CreateUserAccount(newUserAccount *dto.UserRequest) (*dto.UserResponse, error) {
@@ -58,36 +65,63 @@ func (usecase *transactionUsecase) CreateUserAccount(newUserAccount *dto.UserReq
 	return usecase.transactionRepo.CreateUserAccount(newUserAccount)
 }
 
-func (usecase *transactionUsecase) CreateMainTransfer(newMainTransfer *dto.TransferRequest, fromAccountID string) (*dto.TransferResponse, error) {
+func (usecase *transactionUsecase) CreateMainTransfer(newMainTransfer *dto.TransferRequest) (*dto.TransferResponse, error) {
 	if newMainTransfer.ToAccountID == "" {
 		return nil, errors.New("destination account is required")
 	}
-	if newMainTransfer.Amount == 0 {
-		return nil, errors.New("amount is required")
-	}
+	// if newMainTransfer.Amount == 0 {
+	// 	return nil, errors.New("amount is required")
+	// }
 	if newMainTransfer.Amount < 0 {
 		return nil, errors.New("amount must be positive amount")
-	}
-
-	getAccountByFromAccountID, err := usecase.accountRepo.FindAccountByAccountID(fromAccountID)
-	if err != nil {
-		return nil, errors.New("account with account id " + fromAccountID + " not found")
-	}
-	if !getAccountByFromAccountID.IsActive {
-		return nil, errors.New("user unauthorize")
-	}
-	newFromBalance := getAccountByFromAccountID.Balance - newMainTransfer.Amount
-	if newFromBalance < 0 {
-		return nil, errors.New("balance is not enough")
 	}
 
 	getAccountByToAccountID, err := usecase.accountRepo.FindAccountByAccountID(newMainTransfer.ToAccountID)
 	if err != nil {
 		return nil, errors.New("account with account id " + newMainTransfer.ToAccountID + " not found")
 	}
-	newToBalance := getAccountByToAccountID.Balance + newMainTransfer.Amount
+	newMainTransfer.NewToBalance = getAccountByToAccountID.Balance + newMainTransfer.Amount
 
-	return usecase.transactionRepo.CreateMainTransfer(newMainTransfer, fromAccountID, newFromBalance, newToBalance)
+	newMainTransfer.NewStatusCart = "payment"
+
+	getCartByUserID, err := usecase.cartRepo.FindCartByUserID(newMainTransfer.FromAccountID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart list : %w", err)
+	}
+
+	var newTotal int64
+	var stocks = make([]int64, len(getCartByUserID))
+	for _, v := range getCartByUserID {
+		getProductByProductID, err := usecase.productRepo.FindProductByProductID(v.ProductID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get product : %w", err)
+		}
+		newStock := getProductByProductID.Stock - v.Quantity
+		if newStock < 0 {
+			return nil, errors.New("stock is not enough")
+		}
+		stocks = append(stocks,newStock)
+		newTotal += v.Total
+		fmt.Println("total:",newTotal)
+	}
+
+	newMainTransfer.NewStock = stocks
+
+	getAccountByFromAccountID, err := usecase.accountRepo.FindAccountByAccountID(newMainTransfer.FromAccountID)
+	if err != nil {
+		return nil, errors.New("account with account id " + newMainTransfer.FromAccountID + " not found")
+	}
+	if !getAccountByFromAccountID.IsActive {
+		return nil, errors.New("user unauthorize")
+	}
+	// fmt.Println(newTotal)
+	newMainTransfer.NewFromBalance = getAccountByFromAccountID.Balance - newTotal
+	if newMainTransfer.NewFromBalance < 0 {
+		return nil, errors.New("balance is not enough")
+	}
+	newMainTransfer.Amount = newTotal
+
+	return usecase.transactionRepo.CreateMainTransfer(newMainTransfer)
 }
 
 func (usecase *transactionUsecase) CreateMainEntry(newMainEntry *dto.EntryRequest, accountID string, balance int64) (*dto.EntryResponse, error) {

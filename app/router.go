@@ -20,14 +20,14 @@ func SetupRouter(db *sql.DB) *gin.Engine {
 	productRepository := repository.NewProductRepository(db)
 	cartRepository := repository.NewCartRepository(db)
 	transferRepository := repository.NewTransferRepository(db)
-	transactionRepository := repository.NewTransactionRepository(db, userRepository, accountRepository, entryRepository, transferRepository)
+	transactionRepository := repository.NewTransactionRepository(db, userRepository, accountRepository, entryRepository, transferRepository, productRepository, cartRepository)
 
 	// userUsecase := usecase.NewUserUsecase(userRepository)
 	accountUsecase := usecase.NewAccountUsecase(accountRepository)
 	storeUsecase := usecase.NewStoreUsecase(storeRepository)
 	productUsecase := usecase.NewProductUsecase(productRepository)
 	cartUsecase := usecase.NewCartUsecase(cartRepository, productRepository)
-	transactionUsecase := usecase.NewTransactionUsecase(transactionRepository, userRepository, accountRepository)
+	transactionUsecase := usecase.NewTransactionUsecase(transactionRepository, userRepository, accountRepository, cartRepository, productRepository)
 	loginUsecase := usecase.NewLoginUsecase(userRepository, accountRepository)
 
 	storeDelivery := delivery.NewStoreDelivery(storeUsecase)
@@ -43,7 +43,7 @@ func SetupRouter(db *sql.DB) *gin.Engine {
 	group_router.Use(utils.AuthMiddleware(utils.GetEnv("JWT_KEY")))
 	{
 		group_router.POST("/entry", transactionDelivery.CreateMainEntry)
-		group_router.POST("/transfer", transactionDelivery.CreateMainTransfer)
+		group_router.POST("/payment", transactionDelivery.CreateMainTransfer)
 		group_router.POST("/logout", loginDelivery.Logout)
 		group_router.POST("/store", storeDelivery.CreateStore)
 		group_router.POST("/product", productDelivery.CreateProduct)

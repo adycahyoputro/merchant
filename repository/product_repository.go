@@ -13,6 +13,7 @@ import (
 type ProductRepository interface {
 	CreateProduct(newProduct *dto.ProductRequest) (*dto.ProductResponse, error)
 	FindProductByProductID(productID string) (*entity.Product, error)
+	UpdateStockProduct(newStock int64, idProduct string, tx *sql.Tx) error
 }
 
 type productRepository struct {
@@ -63,7 +64,7 @@ func (repo *productRepository) CreateProduct(newProduct *dto.ProductRequest) (*d
 
 func (repo *productRepository) FindProductByProductID(productID string) (*entity.Product, error) {
 	var product entity.Product
-	stmt, err := repo.db.Prepare("SELECT id, store_id, product_name, description, stock, price, created_at, updated_at, is_delete FROM products WHERE id = $1")
+	stmt, err := repo.db.Prepare("SELECT id, store_id, product_name, description, stock, price, created_at, updated_at, is_delete FROM products WHERE id = $1 ORDER BY product_name ASC")
 	if err != nil {
 		return nil, err
 	}
@@ -77,4 +78,18 @@ func (repo *productRepository) FindProductByProductID(productID string) (*entity
 	}
 
 	return &product, nil
+}
+
+func (repo *productRepository) UpdateStockProduct(newStock int64, idProduct string, tx *sql.Tx) error {
+	stmt, err := repo.db.Prepare("UPDATE products SET stock = $1 WHERE id = $2")
+	if err != nil {
+		return fmt.Errorf("failed to update product : %w", err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(newStock, idProduct)
+
+	validate(err, "update product", tx)
+
+	return nil
 }

@@ -12,7 +12,7 @@ import (
 
 type TransactionRepository interface {
 	CreateUserAccount(newMainUser *dto.UserRequest) (*dto.UserResponse, error)
-	CreateMainTransfer(newMainTransfer *dto.TransferRequest, fromAccountID string, fromBalance int64, toBalance int64) (*dto.TransferResponse, error)
+	CreateMainTransfer(newMainTransfer *dto.TransferRequest) (*dto.TransferResponse, error)
 	CreateMainEntry(newMainEntry *dto.EntryRequest, accountID string, balance int64) (*dto.EntryResponse, error)
 }
 
@@ -22,6 +22,8 @@ type transactionRepository struct {
 	accountRepository  AccountRepository
 	entryRepository    EntryRepository
 	transferRepository TransferRepository
+	productRepository  ProductRepository
+	cartRepository     CartRepository
 }
 
 func NewTransactionRepository(
@@ -29,13 +31,17 @@ func NewTransactionRepository(
 	userRepository UserRepository,
 	accountRepository AccountRepository,
 	entryRepository EntryRepository,
-	transferRepository TransferRepository) TransactionRepository {
+	transferRepository TransferRepository,
+	productRepository  ProductRepository,
+	cartRepository     CartRepository) TransactionRepository {
 	return &transactionRepository{
 		db:                 db,
 		userRepository:     userRepository,
 		accountRepository:  accountRepository,
 		entryRepository:    entryRepository,
 		transferRepository: transferRepository,
+		productRepository: productRepository,
+		cartRepository: cartRepository,
 	}
 }
 
@@ -105,7 +111,7 @@ func (repo *transactionRepository) CreateUserAccount(newMainUser *dto.UserReques
 	return &newResponse, nil
 }
 
-func (repo *transactionRepository) CreateMainTransfer(newMainTransfer *dto.TransferRequest, fromAccountID string, fromBalance int64, toBalance int64) (*dto.TransferResponse, error) {
+func (repo *transactionRepository) CreateMainTransfer(newMainTransfer *dto.TransferRequest) (*dto.TransferResponse, error) {
 	tx, err := repo.db.Begin()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create user : %w", err)
@@ -119,7 +125,7 @@ func (repo *transactionRepository) CreateMainTransfer(newMainTransfer *dto.Trans
 
 	newTransfer := entity.Transfer{
 		ID:            idTransfer.String(),
-		FromAccountID: fromAccountID,
+		FromAccountID: newMainTransfer.FromAccountID,
 		ToAccountID:   newMainTransfer.ToAccountID,
 		Amount:        newMainTransfer.Amount,
 		CreatedAt:     createdAt,
@@ -130,8 +136,8 @@ func (repo *transactionRepository) CreateMainTransfer(newMainTransfer *dto.Trans
 	}
 
 	newFromAccount := dto.AccountRequest{
-		AccountID: fromAccountID,
-		Balance:   fromBalance,
+		AccountID: newMainTransfer.FromAccountID,
+		Balance:   newMainTransfer.NewFromBalance,
 	}
 	updateFromAccount, err := repo.accountRepository.UpdateAccount(&newFromAccount, tx)
 	if err != nil {
@@ -140,13 +146,45 @@ func (repo *transactionRepository) CreateMainTransfer(newMainTransfer *dto.Trans
 
 	newToAccount := dto.AccountRequest{
 		AccountID: newMainTransfer.ToAccountID,
-		Balance:   toBalance,
+		Balance:   newMainTransfer.NewToBalance,
 	}
 	updateToAccount, err := repo.accountRepository.UpdateAccount(&newToAccount, tx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update account balance : %w", err)
 	}
 
+	getCartByUserID, err := repo.cartRepository.FindCartByUserID(newMainTransfer.FromAccountID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart list : %w", err)
+	}
+	// for i := 0; i < len(getCartByUserID); i++ {
+	// 	err := repo.cartRepository.UpdateStatusCart(newMainTransfer.NewStatusCart, , tx)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("failed to update status cart : %w", err)
+	// 	}
+
+	// 	errProduct := repo.productRepository.UpdateStockProduct(newMainTransfer.NewStock[k], v.ProductID, tx)
+	// 	if errProduct != nil {
+	// 		return nil, fmt.Errorf("failed to update status cart : %w", err)
+	// 	}
+	// }
+	i := 0
+	for _, v := range getCartByUserID {
+		// v.Status = newMainTransfer.NewStatusCart
+		i++
+		err := repo.cartRepository.UpdateStatusCart(newMainTransfer.NewStatusCart, v.ID, tx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to update status cart : %w", err)
+		}
+
+		errProduct := repo.productRepository.UpdateStockProduct(newMainTransfer.NewStock[i], v.ProductID, tx)
+		if errProduct != nil {
+			return nil, fmt.Errorf("failed to update status cart : %w", err)
+		}
+	}
+
+	fmt.Println(newMainTransfer.NewStock)
+	
 	newResponse := dto.TransferResponse{
 		ID:            transfer.ID,
 		FromAccountID: updateFromAccount.AccountID,

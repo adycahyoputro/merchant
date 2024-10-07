@@ -57,5 +57,6 @@ func (repo *storeRepository) CreateStore(newStore *dto.StoreRequest) (*dto.Store
 		NoHp: newStore.NoHp,
 		Address: newStore.Address,
 	}
+	fmt.Println(newResponse)
 	return &newResponse, nil
 }

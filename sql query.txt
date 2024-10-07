@@ -1,0 +1,66 @@
+tolong untuk buat table berikut sebelum menjalankan aplikasi
+CREATE TABLE users (
+  id uuid PRIMARY KEY, 
+  first_name VARCHAR (50) NOT NULL,
+  last_name VARCHAR (50) NOT NULL,
+  email VARCHAR (255) UNIQUE NOT NULL,
+  password VARCHAR (255) NOT NULL,
+  created_at TIMESTAMP NOT NULL, 
+);
+CREATE TABLE accounts (
+  id uuid PRIMARY KEY, 
+  user_id uuid NOT NULL,
+  owner VARCHAR (50) NOT NULL,
+  balance INT NOT NULL,
+  currency VARCHAR (255) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  is_active BOOLEAN NOT NULL,
+);
+CREATE TABLE entries (
+  id uuid PRIMARY KEY, 
+  account_id uuid NOT NULL,
+  amount INT NOT NULL,
+  created_at TIMESTAMP NOT NULL, 
+);
+CREATE TABLE transfers (
+  id uuid PRIMARY KEY,
+  from_account_id uuid NOT NULL,
+  to_account_id uuid NOT NULL,
+  amount INT NOT NULL,
+  created_at TIMESTAMP NOT NULL, 
+);
+CREATE TABLE products (
+  id uuid PRIMARY KEY, 
+  store_id uuid NOT NULL,
+  product_name VARCHAR (255) NOT NULL,
+  description VARCHAR (255) NOT NULL,
+  stock INT NOT NULL,
+  price INT NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  is_delete BOOLEAN NOT NULL
+);
+CREATE TABLE stores (
+  id uuid PRIMARY KEY, 
+  user_id uuid NOT NULL,
+  store_name VARCHAR (255) NOT NULL,
+  description VARCHAR (255) NOT NULL,
+  email VARCHAR (255) NOT NULL,
+  no_hp VARCHAR (255) NOT NULL,
+  address VARCHAR (255) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  is_delete BOOLEAN NOT NULL
+);
+CREATE TABLE carts (
+  id uuid PRIMARY KEY, 
+  customer_id uuid NOT NULL,
+  product_id uuid NOT NULL,
+  quantity INT NOT NULL,
+  price INT NOT NULL,
+  total INT NOT NULL,
+  status VARCHAR (255) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  is_delete BOOLEAN NOT NULL
+);

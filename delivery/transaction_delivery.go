@@ -76,9 +76,9 @@ func (delivery *transactionDelivery) CreateMainTransfer(ctx *gin.Context) {
 	}
 
 	getAccountByUserID, _ := delivery.accountUsecase.FindAccountByUserID(userId)
-	fromAccountID := getAccountByUserID.ID
+	transferRequest.FromAccountID = getAccountByUserID.ID
 
-	newUserAccount, err := delivery.transactionUsecase.CreateMainTransfer(&transferRequest, fromAccountID)
+	newUserAccount, err := delivery.transactionUsecase.CreateMainTransfer(&transferRequest)
 	if err != nil {
 		result := utils.CheckError(transferRequest.ToAccountID, err)
 		ctx.JSON(result.Code, result)

@@ -60,6 +60,25 @@ func (repo *accountRepository) FindAccountByAccountID(accountID string) (*entity
 	return &account, nil
 }
 
+func (repo *accountRepository) FindAccountByProductID(productID string) (string, error) {
+	var account entity.Account
+	stmt, err := repo.db.Prepare("select a.id from carts c INNER JOIN products p ON c.product_id = p.id INNER JOIN stores s ON p.store_id = s.id INNER JOIN accounts a ON s.user_id = a.user_id WHERE c.product_id = $1 LIMIT 1")
+	if err != nil {
+		return "", err
+	}
+	defer stmt.Close()
+
+	err = stmt.QueryRow(productID).Scan(&account.ID)
+	if err == sql.ErrNoRows {
+		return "", fmt.Errorf("account with product id %s not found", productID)
+	} else if err != nil {
+		return "", err
+	}
+	accountID := account.ID
+	fmt.Println(accountID)
+	return accountID, nil
+}
+
 func (repo *accountRepository) CreateAccount(newAccount *entity.Account, tx *sql.Tx) (*entity.Account, error) {
 	stmt, err := repo.db.Prepare("INSERT INTO accounts (id, user_id, owner, balance, currency, created_at, is_active) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id")
 	if err != nil {

@@ -17,8 +17,13 @@ type EntryRequest struct {
 }
 
 type TransferRequest struct {
-	ToAccountID string `json:"to_account_id"`
-	Amount      int64  `json:"amount"`
+	FromAccountID  string  `json:"from_account_id"`
+	ToAccountID    string  `json:"to_account_id"`
+	Amount         int64   `json:"amount"`
+	NewFromBalance int64   `json:"new_from_balance"`
+	NewToBalance   int64   `json:"new_to_balance"`
+	NewStatusCart  string  `json:"new_status_cart"`
+	NewStock       []int64 `json:"new_stock"`
 }
 
 type AccountRequest struct {
